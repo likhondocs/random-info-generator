@@ -8,7 +8,6 @@ This project includes a Telegram bot that generates random information using the
 2. Install dependencies:
    ```
    npm install
-   pip install -r requirements.txt
    ```
 3. Create a `.env` file in the root directory and add your Telegram bot token:
    ```
@@ -33,4 +32,3 @@ Once the bot is running, start a chat with it on Telegram and use the following 
 
 - `/start`: Get a welcome message
 - `/generate`: Generate random information
-

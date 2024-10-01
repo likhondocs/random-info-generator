@@ -6,28 +6,29 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Welcome to the Random Info Generator Bot! Use /generate to get random information.');
+  bot.sendMessage(chatId, '👋 Welcome to the *Random Info Generator Bot*! 🤖\nUse /generate to get random information.', { parse_mode: 'Markdown' });
 });
 
 bot.onText(/\/generate/, async (msg) => {
   const chatId = msg.chat.id;
+  bot.sendMessage(chatId, '🔄 Generating random information for you... ⏳');
   try {
     const response = await axios.get('https://your-vercel-domain.vercel.app/api/generate');
     const data = response.data[0]; // Get the first item from the result array
     
-    let message = 'Here\'s your random information:\n\n';
+    let message = '🎲 *Here's your random information* 🎲:\n\n';
     for (const [category, info] of Object.entries(data)) {
-      message += ;
+      message += `*${category.toUpperCase()}*:\n`;
       for (const [key, value] of Object.entries(info)) {
-        message += ;
+        message += `- *${key}*: ${value}\n`;
       }
       message += '\n';
     }
     
-    bot.sendMessage(chatId, message);
+    bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
   } catch (error) {
     console.error('Error fetching random info:', error);
-    bot.sendMessage(chatId, 'Sorry, there was an error generating random information. Please try again later.');
+    bot.sendMessage(chatId, '❌ Sorry, there was an error generating random information. Please try again later.');
   }
 });
 
