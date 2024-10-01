@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/generate.py", "use": "@vercel/python" },
+    { "src": "src/bot.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/generate", "dest": "api/generate.py" },
+    { "src": "/bot", "dest": "src/bot.js" }
+  ]
+}
