@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Info Generator Bot</title>
+</head>
+<body>
+  <h1>Random Info Generator Bot</h1>
+  <p>Welcome to the Random Info Generator Bot!</p>
+  <p>This bot generates random information using the Fauxid API.</p>
+  <p>To get started, use the /start command.</p>
+  <p>To generate random information, use the /generate command.</p>
+  <div id="logs"></div>
+
+  <script>
+    // Function to fetch and display bot logs
+    function fetchAndDisplayLogs() {
+      fetch('/api/logs')
+        .then(response => response.json())
+        .then(logs => {
+          const logsDiv = document.getElementById('logs');
+          logsDiv.innerHTML = '';
+          logs.forEach(log => {
+            const logElement = document.createElement('div');
+            logElement.textContent = log;
+            logsDiv.appendChild(logElement);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching logs:', error);
+        });
+    }
+
+    // Fetch and display logs initially
+    fetchAndDisplayLogs();
+
+    // Set an interval to fetch and display logs every 5 seconds
+    setInterval(fetchAndDisplayLogs, 5000);
+  </script>
+</body>
+</html>
