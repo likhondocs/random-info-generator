@@ -2,17 +2,17 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 class Fauxid {
-    constructor(country = null, number = 10, personal_data = true, bank_data = true,
-                cryptocurrency_data = true, internet_data = true, education_data = true,
-                company_data = true) {
-        this.url = country ? `${country}` : "https://fauxid.com/fake-name-generator/";
-        this.number = number;
-        this.personal_data = personal_data;
-        this.bank_data = bank_data;
-        this.cryptocurrency_data = cryptocurrency_data;
-        this.internet_data = internet_data;
-        this.education_data = education_data;
-        this.company_data = company_data;
+    constructor(options = {}) {
+        this.country = options.country || null;
+        this.number = options.number || 10;
+        this.personalData = options.personalData || true;
+        this.bankData = options.bankData || true;
+        this.cryptocurrencyData = options.cryptocurrencyData || true;
+        this.internetData = options.internetData || true;
+        this.educationData = options.educationData || true;
+        this.companyData = options.companyData || true;
+
+        this.url = this.country ? `${this.country}` : "https://fauxid.com/fake-name-generator/";
     }
 
     async getData() {
@@ -20,11 +20,10 @@ class Fauxid {
         const $ = cheerio.load(response.data);
         const data = {};
 
-        if (this.personal_data) {
-            data.personal_data = {
+        if (this.personalData) {
+            data.personalData = {
                 name: $('div.name span').text(),
-                address: $('div.address address').text().replace(/
-/g, ''),
+                address: $('div.address address').text().replace(/\n/g, ''),
                 phone: $('div.phone span').text(),
                 socialSecurityNumber: $('div.ssn span').text(),
                 dateOfBirth: $('div.dob span:first-child').text(),
@@ -38,8 +37,8 @@ class Fauxid {
             };
         }
 
-        if (this.bank_data) {
-            data.banking_data = {
+        if (this.bankData) {
+            data.bankingData = {
                 creditCardNumber: $('div.credit-card span code').text(),
                 expDate: $('div.credit-card-expiration span:first-child').text(),
                 cvv: $('div.credit-card-expiration span:last-child').text(),
@@ -50,15 +49,15 @@ class Fauxid {
             };
         }
 
-        if (this.cryptocurrency_data) {
-            data.cryptocurrency_data = {
+        if (this.cryptocurrencyData) {
+            data.cryptocurrencyData = {
                 bitcoinAddress: $('div.bitcoin span code').text(),
                 ethereumAddress: $('div.ethereum span code').text()
             };
         }
 
-        if (this.internet_data) {
-            data.internet_data = {
+        if (this.internetData) {
+            data.internetData = {
                 username: $('div.username span').text(),
                 password: $('div.password span code').text(),
                 uniqueUserIdentifier: $('div.uuid span code').text(),
@@ -70,15 +69,15 @@ class Fauxid {
             };
         }
 
-        if (this.education_data) {
-            data.education_data = {
+        if (this.educationData) {
+            data.educationData = {
                 educationLevel: $('div.education-level span').text(),
                 university: $('div.university span').text()
             };
         }
 
-        if (this.company_data) {
-            data.company_data = {
+        if (this.companyData) {
+            data.companyData = {
                 shortCompanyName: $('div.company-name span:first-child').text(),
                 longCompanyName: $('div.company-name span:last-child').text(),
                 companyDescription: $('div.company-description span').text(),
